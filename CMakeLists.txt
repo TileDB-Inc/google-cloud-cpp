@@ -161,6 +161,7 @@ endif ()
 
 # Enable testing in this directory so we can do a top-level `make test`. This
 # also includes the BUILD_TESTING option, which is on by default.
+option(BUILD_TESTING "" OFF)
 include(CTest)
 
 # Each subproject adds dependencies to this target to have their docs generated.
