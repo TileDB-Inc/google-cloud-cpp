@@ -17,7 +17,6 @@
 find_package(Threads REQUIRED)
 
 include(ExternalProjectHelper)
-include(external/zlib)
 
 if (NOT TARGET protobuf-project)
     # Give application developers a hook to configure the version and hash
@@ -33,7 +32,6 @@ if (NOT TARGET protobuf-project)
     include(ExternalProject)
     ExternalProject_Add(
         protobuf-project
-        DEPENDS zlib-project
         EXCLUDE_FROM_ALL ON
         PREFIX "${CMAKE_BINARY_DIR}/external/protobuf"
         INSTALL_DIR "${GOOGLE_CLOUD_CPP_EXTERNAL_PREFIX}"
@@ -51,9 +49,12 @@ if (NOT TARGET protobuf-project)
             -Dprotobuf_DEBUG_POSTFIX=
             -H<SOURCE_DIR>/cmake
             -B<BINARY_DIR>
+            -DCMAKE_CXX_FLAGS=-fPIC
+            -DCMAKE_C_FLAGS=-fPIC
         BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR> ${PARALLEL}
         LOG_DOWNLOAD ON
         LOG_CONFIGURE ON
         LOG_BUILD ON
-        LOG_INSTALL ON)
+        LOG_INSTALL ON
+        LOG_OUTPUT_ON_FAILURE ON)
 endif ()

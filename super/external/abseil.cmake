@@ -45,6 +45,8 @@ if (NOT TARGET abseil-cpp-project)
                    -DCMAKE_PREFIX_PATH=${GOOGLE_CLOUD_CPP_PREFIX_PATH}
                    -DCMAKE_INSTALL_RPATH=${GOOGLE_CLOUD_CPP_INSTALL_RPATH}
                    -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+                   -DCMAKE_CXX_FLAGS=-fPIC
+                   -DCMAKE_C_FLAGS=-fPIC
         BUILD_COMMAND
             ${CMAKE_COMMAND}
             --build
@@ -57,5 +59,6 @@ if (NOT TARGET abseil-cpp-project)
         LOG_DOWNLOAD OFF
         LOG_CONFIGURE OFF
         LOG_BUILD ON
-        LOG_INSTALL ON)
+        LOG_INSTALL ON
+	LOG_OUTPUT_ON_FAILURE ON)
 endif ()

@@ -17,7 +17,6 @@
 include(ExternalProjectHelper)
 include(external/abseil)
 include(external/c-ares)
-include(external/ssl)
 include(external/protobuf)
 
 if (NOT TARGET grpc-project)
@@ -34,7 +33,7 @@ if (NOT TARGET grpc-project)
     include(ExternalProject)
     ExternalProject_Add(
         grpc-project
-        DEPENDS c-ares-project protobuf-project ssl-project abseil-cpp-project
+        DEPENDS c-ares-project protobuf-project abseil-cpp-project
         EXCLUDE_FROM_ALL ON
         PREFIX "${CMAKE_BINARY_DIR}/external/grpc"
         INSTALL_DIR "${GOOGLE_CLOUD_CPP_EXTERNAL_PREFIX}"
@@ -52,9 +51,19 @@ if (NOT TARGET grpc-project)
                    -DgRPC_PROTOBUF_PROVIDER=package
                    -DgRPC_SSL_PROVIDER=package
                    -DgRPC_ZLIB_PROVIDER=package
+                   -DCMAKE_CXX_FLAGS=-fPIC
+                   -DCMAKE_C_FLAGS=-fPIC
+                   -DgRPC_BUILD_GRPC_CSHARP_PLUGIN=OFF
+                   -DgRPC_BUILD_GRPC_NODE_PLUGIN=OFF
+                   -DgRPC_BUILD_GRPC_OBJECTIVE_C_PLUGIN=OFF
+                   -DgRPC_BUILD_GRPC_PHP_PLUGIN=OFF
+                   -DgRPC_BUILD_GRPC_PYTHON_PLUGIN=OFF
+                   -DgRPC_BUILD_GRPC_RUBY_PLUGIN=OFF
+                   -DOPENSSL_ROOT_DIR=${OPENSSL_ROOT_DIR}
         BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR> ${PARALLEL}
         LOG_DOWNLOAD ON
         LOG_CONFIGURE ON
         LOG_BUILD ON
-        LOG_INSTALL ON)
+        LOG_INSTALL ON
+	LOG_OUTPUT_ON_FAILURE ON)
 endif ()

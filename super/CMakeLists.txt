@@ -38,7 +38,6 @@ if ("${GOOGLE_CLOUD_CPP_ENABLE_CCACHE}")
 endif ()
 
 include(external/abseil)
-include(external/curl)
 include(external/crc32c)
 include(external/grpc)
 include(external/googletest)
@@ -51,8 +50,11 @@ set_external_project_build_parallel_level(PARALLEL)
 set_external_project_vars()
 
 set(GOOGLE_CLOUD_CPP_DEPENDENCIES_LIST
-    abseil-cpp-project grpc-project curl-project crc32c-project
-    googletest-project benchmark-project)
+    abseil-cpp-project
+    grpc-project
+    crc32c-project
+    googletest-project
+    benchmark-project)
 
 include(ExternalProject)
 ExternalProject_Add(
@@ -70,6 +72,14 @@ ExternalProject_Add(
                -DCMAKE_PREFIX_PATH=${GOOGLE_CLOUD_CPP_PREFIX_PATH}
                -DCMAKE_INSTALL_RPATH=${GOOGLE_CLOUD_CPP_INSTALL_RPATH}
                -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+               -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+               -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}
+               -DBUILD_SAMPLES=${BUILD_SAMPLES}
+               -DCMAKE_CXX_FLAGS=-fPIC
+               -DCMAKE_C_FLAGS=-fPIC
+               -DOPENSSL_ROOT_DIR=${OPENSSL_ROOT_DIR}
+               -DGOOGLE_CLOUD_CPP_ENABLE_MACOS_OPENSSL_CHECK=OFF
+               -DBUILD_TESTING=${BUILD_TESTING}
     BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR> ${PARALLEL}
     TEST_COMMAND
         ${CMAKE_CTEST_COMMAND}
@@ -82,7 +92,8 @@ ExternalProject_Add(
     LOG_DOWNLOAD OFF
     LOG_CONFIGURE OFF
     LOG_BUILD OFF
-    LOG_INSTALL OFF)
+    LOG_INSTALL OFF
+    LOG_OUTPUT_ON_FAILURE ON)
 
 # This makes it easy to compile the dependencies before the code.
 add_custom_target(project-dependencies)

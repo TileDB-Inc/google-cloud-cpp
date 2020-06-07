@@ -61,6 +61,11 @@ endif ()
 option(GOOGLE_CLOUD_CPP_ENABLE_MACOS_OPENSSL_CHECK
        "If enabled, check that the user has defined OPENSSL_ROOT_DIR on macOS"
        ON)
+
+ if (NOT DEFINED ENV{OPENSSL_ROOT_DIR} AND DEFINED OPENSSL_ROOT_DIR)
+   set(ENV{OPENSSL_ROOT_DIR} ${OPENSSL_ROOT_DIR})
+ endif()
+
 if (APPLE)
     # This is an easy mistake to make, and the error messages are very
     # confusing. Help our users by giving them some guidance.

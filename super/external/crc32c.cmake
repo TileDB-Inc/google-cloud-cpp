@@ -43,9 +43,12 @@ if (NOT TARGET crc32c-project)
                    -DCRC32C_BUILD_TESTS=OFF
                    -DCRC32C_BUILD_BENCHMARKS=OFF
                    -DCRC32C_USE_GLOG=OFF
+                   -DCMAKE_CXX_FLAGS=-fPIC
+                   -DCMAKE_C_FLAGS=-fPIC
         BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR> ${PARALLEL}
         LOG_DOWNLOAD ON
         LOG_CONFIGURE ON
         LOG_BUILD ON
-        LOG_INSTALL ON)
+        LOG_INSTALL ON
+        LOG_OUTPUT_ON_FAILURE ON)
 endif ()
